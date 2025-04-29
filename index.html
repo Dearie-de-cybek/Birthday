@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --main-bg: #0f0f2d;
@@ -81,6 +82,7 @@
       background: #333;
       border-radius: 20px;
       margin: 2rem auto;
+      position: relative;
     }
 
     .xp-bar {
@@ -88,6 +90,23 @@
       background: #00ff99;
       border-radius: 20px;
       width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .level-up {
+      position: absolute;
+      top: -2rem;
+      right: 0;
+      color: gold;
+      font-weight: bold;
+      display: none;
+      animation: pop 1s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .gallery {
@@ -115,6 +134,7 @@
       margin-top: 3rem;
       font-size: 0.9rem;
       color: #ccc;
+      text-align: center;
     }
   </style>
 </head>
@@ -132,13 +152,13 @@
     <p>From laughter to late-night chats, here's to every shared moment...</p>
     <div class="gallery">
       <img src="Tee1.JPG" alt="Memory 1" />
-      <img src="Tee2.JPG" alt="Memory 1" />
-      <img src="Tee3.JPG" alt="Memory 1" />
-      <img src="Tee4.JPG" alt="Memory 1" />
-      <img src="Tee5.JPG" alt="Memory 1" />
-      <img src="Tee6.JPG" alt="Memory 1" />
-      <img src="Tee7.JPG" alt="Memory 1" />
-      <img src="Tee8.JPG" alt="Memory 1" />
+      <img src="Tee2.JPG" alt="Memory 2" />
+      <img src="Tee3.JPG" alt="Memory 3" />
+      <img src="Tee4.JPG" alt="Memory 4" />
+      <img src="Tee5.JPG" alt="Memory 5" />
+      <img src="Tee6.JPG" alt="Memory 6" />
+      <img src="Tee7.JPG" alt="Memory 7" />
+      <img src="Tee8.JPG" alt="Memory 8" />
     </div>
   </section>
 
@@ -171,14 +191,18 @@ celebrateHer();
 
   <!-- XP Bar -->
   <div class="xp-bar-container">
+    <div class="level-up" id="level-up-msg">🎉 Level Up!</div>
     <div id="xp-bar" class="xp-bar"></div>
   </div>
 
   <!-- Footer -->
   <div class="footer">Crafted with love 💖 by your forever friend</div>
 
+  <!-- Audio -->
+  <audio id="celebrate-sound" src="celebrate.mp3" preload="auto"></audio>
+
   <script>
-    // Typed effect
+    // Typed text
     new Typed("#typed-message", {
       strings: [
         "Today, you begin your birthday quest...",
@@ -190,30 +214,55 @@ celebrateHer();
       loop: true
     });
 
-    // Scroll and reveal
+    // Reveal sections
     function scrollToNext() {
-      const sections = ['level1', 'level2', 'level3'];
-      sections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.remove('hidden');
+      ['level1', 'level2', 'level3'].forEach(id => {
+        document.getElementById(id).classList.remove('hidden');
       });
       document.getElementById('level1').scrollIntoView({ behavior: 'smooth' });
       updateXP(30);
     }
 
+    // XP bar logic
+    let xp = 0;
+    function updateXP(amount) {
+      xp += amount;
+      if (xp >= 100) {
+        xp = 100;
+        showLevelUp();
+      }
+      document.getElementById('xp-bar').style.width = xp + '%';
+    }
+
+    function showLevelUp() {
+      const msg = document.getElementById('level-up-msg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    }
+
+    // Confetti + Sound
     function revealOracle() {
       const message = `Titilola, your light uplifts worlds. You are rare, radiant, and endlessly loved. 💖`;
       document.getElementById('oracle-message').innerText = message;
       updateXP(40);
+      confettiExplosion();
+      playSound();
     }
 
-    let xp = 0;
-    function updateXP(amount) {
-      xp += amount;
-      if (xp > 100) xp = 100;
-      document.getElementById('xp-bar').style.width = xp + '%';
+    function confettiExplosion() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     }
 
+    function playSound() {
+      const sound = document.getElementById('celebrate-sound');
+      sound.play();
+    }
+
+    // Scroll animations
     gsap.utils.toArray(".section").forEach(section => {
       gsap.from(section, {
         scrollTrigger: {
