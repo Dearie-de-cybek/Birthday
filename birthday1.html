@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Titilola's Birthdayverse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <style>
+    :root {
+      --main-bg: #0f0f2d;
+      --accent: #ff66c4;
+      --text: #fff;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Raleway', sans-serif;
+      background: var(--main-bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent);
+    }
+
+    #hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .start-btn {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: var(--accent);
+      color: var(--main-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .code-box {
+      background: #1a1a1a;
+      color: #00ff99;
+      font-family: monospace;
+      padding: 1rem;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 700px;
+      margin: auto;
+      text-align: left;
+    }
+
+    .xp-bar-container {
+      width: 80%;
+      background: #333;
+      border-radius: 20px;
+      margin: 2rem auto;
+    }
+
+    .xp-bar {
+      height: 20px;
+      background: #00ff99;
+      border-radius: 20px;
+      width: 0%;
+    }
+
+    .gallery {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .gallery img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section id="hero" class="section">
+    <h1>Welcome to Titilola's Birthdayverse 🎉</h1>
+    <div id="typed-message"></div>
+    <button class="start-btn" onclick="scrollToNext()">Start Adventure 🚀</button>
+  </section>
+
+  <!-- Level 1: Memory Lane -->
+  <section id="level1" class="section hidden">
+    <h2>📸 Memory Lane</h2>
+    <p>From laughter to late-night chats, here's to every shared moment...</p>
+    <div class="gallery">
+      <img src="Tee1.JPG" alt="Memory 1" />
+      <img src="Tee2.JPG" alt="Memory 1" />
+      <img src="Tee3.JPG" alt="Memory 1" />
+      <img src="Tee4.JPG" alt="Memory 1" />
+      <img src="Tee5.JPG" alt="Memory 1" />
+      <img src="Tee6.JPG" alt="Memory 1" />
+      <img src="Tee7.JPG" alt="Memory 1" />
+      <img src="Tee8.JPG" alt="Memory 1" />
+    </div>
+  </section>
+
+  <!-- Level 2: Heartfelt Code -->
+  <section id="level2" class="section hidden">
+    <h2>💻 Techie Love Note</h2>
+    <div class="code-box">
+<pre>
+const bestFriend = "Titilola";
+let gratitude = 100;
+let love = Infinity;
+
+function celebrateHer() {
+  console.log("She’s a queen in a world of her own.");
+  console.log("Built with grace, powered by love.");
+}
+
+celebrateHer();
+</pre>
+    </div>
+  </section>
+
+  <!-- Level 3: Birthday Oracle -->
+  <section id="level3" class="section hidden">
+    <h2>🔮 Birthday Oracle</h2>
+    <p>Click the button below to unlock your magical message ✨</p>
+    <button class="start-btn" onclick="revealOracle()">Reveal ✨</button>
+    <p id="oracle-message" style="margin-top:2rem; font-size:1.2rem;"></p>
+  </section>
+
+  <!-- XP Bar -->
+  <div class="xp-bar-container">
+    <div id="xp-bar" class="xp-bar"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">Crafted with love 💖 by your forever friend</div>
+
+  <script>
+    // Typed effect
+    new Typed("#typed-message", {
+      strings: [
+        "Today, you begin your birthday quest...",
+        "Power up with love, joy, and sparkle ✨",
+        "Let's celebrate YOU, amazing Tech Queen 👑"
+      ],
+      typeSpeed: 50,
+      backSpeed: 25,
+      loop: true
+    });
+
+    // Scroll and reveal
+    function scrollToNext() {
+      const sections = ['level1', 'level2', 'level3'];
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('hidden');
+      });
+      document.getElementById('level1').scrollIntoView({ behavior: 'smooth' });
+      updateXP(30);
+    }
+
+    function revealOracle() {
+      const message = `Titilola, your light uplifts worlds. You are rare, radiant, and endlessly loved. 💖`;
+      document.getElementById('oracle-message').innerText = message;
+      updateXP(40);
+    }
+
+    let xp = 0;
+    function updateXP(amount) {
+      xp += amount;
+      if (xp > 100) xp = 100;
+      document.getElementById('xp-bar').style.width = xp + '%';
+    }
+
+    gsap.utils.toArray(".section").forEach(section => {
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top center",
+        },
+        y: 100,
+        opacity: 0,
+        duration: 1
+      });
+    });
+  </script>
+</body>
+</html>
